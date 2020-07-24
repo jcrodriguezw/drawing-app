@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useRef} from 'react';
+import CanvasDraw from 'react-canvas-draw'
+
 
 function App() {
+  const firstCanvas = useRef(null)
+  const secondCanvas = useRef(null)
+
+  const handleSave = () => {
+    const data = firstCanvas.current.getSaveData()
+    secondCanvas.current.loadSaveData(data)
+  }
+
+  const handleClear = () => {
+    firstCanvas.current.clear()
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{display:'flex'}}>
+      <div>
+        <CanvasDraw
+          brushRadius={1}
+          brushColor= "red"
+          catenaryColor= "cyan"
+          style={{border:'1px solid black'}}
+          ref={firstCanvas}
+        />
+        <button onClick={handleSave}>save</button>
+        <button onClick={handleClear}>clear</button>
+      </div>
+      <CanvasDraw
+        brushRadius={1}
+        brushColor= "red"
+        catenaryColor= "cyan"
+        hideGrid={true}
+        disabled={true}
+        ref={secondCanvas}
+        style={{border:'1px solid black'}}
+      />
     </div>
   );
 }
